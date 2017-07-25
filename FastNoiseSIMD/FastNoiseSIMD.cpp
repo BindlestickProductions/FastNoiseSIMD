@@ -439,6 +439,39 @@ void FastNoiseSIMD::FillNoiseSet(float* noiseSet, int xStart, int yStart, int zS
 	}
 }
 
+void FastNoiseSIMD::FillNoiseSetMap(float* noiseSet, float* xMap, float* yMap, float* zMap, int xSize, int ySize, int zSize)
+{
+    switch(m_noiseType)
+    {
+    case Value:
+        FillValueSetMap(noiseSet, xMap, yMap, zMap, xSize, ySize, zSize);
+        break;
+    case ValueFractal:
+        FillValueFractalSetMap(noiseSet, xMap, yMap, zMap, xSize, ySize, zSize);
+        break;
+    case Perlin:
+        FillPerlinSetMap(noiseSet, xMap, yMap, zMap, xSize, ySize, zSize);
+        break;
+    case PerlinFractal:
+        FillPerlinFractalSetMap(noiseSet, xMap, yMap, zMap, xSize, ySize, zSize);
+        break;
+    case Simplex:
+        FillSimplexSetMap(noiseSet, xMap, yMap, zMap, xSize, ySize, zSize);
+        break;
+    case SimplexFractal:
+        FillSimplexFractalSetMap(noiseSet, xMap, yMap, zMap, xSize, ySize, zSize);
+        break;
+    case Cubic:
+        FillCubicSetMap(noiseSet, xMap, yMap, zMap, xSize, ySize, zSize);
+        break;
+    case CubicFractal:
+        FillCubicFractalSetMap(noiseSet, xMap, yMap, zMap, xSize, ySize, zSize);
+        break;
+    default:
+        break;
+    }
+}
+
 void FastNoiseSIMD::FillNoiseSet(float* noiseSet, FastNoiseVectorSet* vectorSet, float xOffset, float yOffset, float zOffset)
 {
 	switch (m_noiseType)

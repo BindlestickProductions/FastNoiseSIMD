@@ -51,16 +51,22 @@ namespace FastNoiseSIMD_internal
 
 		void FillValueSet(float* floatSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier = 1.0f) override;
 		void FillValueFractalSet(float* floatSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier = 1.0f) override;
+        void FillValueSetMap(float* noiseSet, float* xMap, float* yMap, float* zMap, int xSize, int ySize, int zSize) override;
+        void FillValueFractalSetMap(float* noiseSet, float* xMap, float* yMap, float* zMap, int xSize, int ySize, int zSize) override;
 		void FillValueSet(float* noiseSet, FastNoiseVectorSet* vectorSet, float xOffset = 0.0f, float yOffset = 0.0f, float zOffset = 0.0f) override;
 		void FillValueFractalSet(float* noiseSet, FastNoiseVectorSet* vectorSet, float xOffset = 0.0f, float yOffset = 0.0f, float zOffset = 0.0f) override;
 
 		void FillPerlinSet(float* floatSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier = 1.0f) override;
 		void FillPerlinFractalSet(float* floatSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier = 1.0f) override;
+        void FillPerlinSetMap(float* noiseSet, float* xMap, float* yMap, float* zMap, int xSize, int ySize, int zSize) override;
+        void FillPerlinFractalSetMap(float* noiseSet, float* xMap, float* yMap, float* zMap, int xSize, int ySize, int zSize) override;
 		void FillPerlinSet(float* noiseSet, FastNoiseVectorSet* vectorSet, float xOffset = 0.0f, float yOffset = 0.0f, float zOffset = 0.0f) override;
 		void FillPerlinFractalSet(float* noiseSet, FastNoiseVectorSet* vectorSet, float xOffset = 0.0f, float yOffset = 0.0f, float zOffset = 0.0f) override;
 
 		void FillSimplexSet(float* floatSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier = 1.0f) override;
 		void FillSimplexFractalSet(float* floatSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier = 1.0f) override;
+        void FillSimplexSetMap(float* noiseSet, float* xMap, float* yMap, float* zMap, int xSize, int ySize, int zSize) override;
+        void FillSimplexFractalSetMap(float* noiseSet, float* xMap, float* yMap, float* zMap, int xSize, int ySize, int zSize) override;
 		void FillSimplexSet(float* noiseSet, FastNoiseVectorSet* vectorSet, float xOffset = 0.0f, float yOffset = 0.0f, float zOffset = 0.0f) override;
 		void FillSimplexFractalSet(float* noiseSet, FastNoiseVectorSet* vectorSet, float xOffset = 0.0f, float yOffset = 0.0f, float zOffset = 0.0f) override;
 
@@ -69,6 +75,8 @@ namespace FastNoiseSIMD_internal
 
 		void FillCubicSet(float* floatSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier = 1.0f) override;
 		void FillCubicFractalSet(float* floatSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier = 1.0f) override;
+        void FillCubicSetMap(float* noiseSet, float* xMap, float* yMap, float* zMap, int xSize, int ySize, int zSize) override;
+        void FillCubicFractalSetMap(float* noiseSet, float* xMap, float* yMap, float* zMap, int xSize, int ySize, int zSize) override;
 		void FillCubicSet(float* noiseSet, FastNoiseVectorSet* vectorSet, float xOffset = 0.0f, float yOffset = 0.0f, float zOffset = 0.0f) override;
 		void FillCubicFractalSet(float* noiseSet, FastNoiseVectorSet* vectorSet, float xOffset = 0.0f, float yOffset = 0.0f, float zOffset = 0.0f) override;
 	};

@@ -1250,6 +1250,24 @@ else\
 	STORE_LAST_RESULT(&noiseSet[index], result);\
 }
 
+#define SET_MAP_BUILDER(f)\
+{\
+	int index = 0; \
+	int maxIndex = xSize * ySize * zSize; \
+	\
+	for (; index < maxIndex ; index += VECTOR_SIZE)\
+	{\
+		SIMDf xF = SIMDf_MUL(SIMDf_LOAD(&xMap[index]), FreqV);\
+		SIMDf yF = SIMDf_MUL(SIMDf_LOAD(&yMap[index]), FreqV);\
+		SIMDf zF = SIMDf_MUL(SIMDf_LOAD(&zMap[index]), FreqV);\
+		\
+		PERTURB_SWITCH()\
+		SIMDf result;\
+		f;\
+		SIMDf_STORE(&noiseSet[index], result);\
+	}\
+}
+
 // FBM SINGLE
 #define FBM_SINGLE(f)\
 	SIMDi seedF = seedV;\
@@ -1331,6 +1349,21 @@ void SIMD_LEVEL_CLASS::Fill##func##Set(float* noiseSet, int xStart, int yStart, 
 	SIMD_ZERO_ALL();\
 }
 
+#define FILL_SET_MAP(func) \
+void SIMD_LEVEL_CLASS::Fill##func##SetMap(float* noiseSet, float* xMap, float* yMap, float* zMap, int xSize, int ySize, int zSize)\
+{\
+	assert(noiseSet);\
+	SIMD_ZERO_ALL();\
+	SIMDi seedV = SIMDi_SET(m_seed); \
+	INIT_PERTURB_VALUES();\
+	\
+	SIMDf FreqV = SIMDf_SET(m_frequency);\
+	\
+	SET_MAP_BUILDER(result = FUNC(func##Single)(seedV, xF, yF, zF))\
+	\
+	SIMD_ZERO_ALL();\
+}
+
 #define FILL_FRACTAL_SET(func) \
 void SIMD_LEVEL_CLASS::Fill##func##FractalSet(float* noiseSet, int xStart, int yStart, int zStart, int xSize, int ySize, int zSize, float scaleModifier)\
 {\
@@ -1364,19 +1397,56 @@ void SIMD_LEVEL_CLASS::Fill##func##FractalSet(float* noiseSet, int xStart, int y
 	SIMD_ZERO_ALL();\
 }
 
+#define FILL_FRACTAL_SET_MAP(func) \
+void SIMD_LEVEL_CLASS::Fill##func##FractalSetMap(float* noiseSet, float* xMap, float* yMap, float* zMap, int xSize, int ySize, int zSize)\
+{\
+	assert(noiseSet);\
+	SIMD_ZERO_ALL();\
+	\
+	SIMDi seedV = SIMDi_SET(m_seed);\
+	SIMDf lacunarityV = SIMDf_SET(m_lacunarity);\
+	SIMDf gainV = SIMDf_SET(m_gain);\
+	SIMDf fractalBoundingV = SIMDf_SET(m_fractalBounding);\
+	INIT_PERTURB_VALUES();\
+	\
+	SIMDf FreqV = SIMDf_SET(m_frequency);\
+	\
+	switch(m_fractalType)\
+	{\
+	case FBM:\
+		SET_MAP_BUILDER(FBM_SINGLE(func))\
+		break;\
+	case Billow:\
+		SET_MAP_BUILDER(BILLOW_SINGLE(func))\
+		break;\
+	case RigidMulti:\
+		SET_MAP_BUILDER(RIGIDMULTI_SINGLE(func))\
+		break;\
+	}\
+	SIMD_ZERO_ALL();\
+}
+
 FILL_SET(Value)
+FILL_SET_MAP(Value)
 FILL_FRACTAL_SET(Value)
+FILL_FRACTAL_SET_MAP(Value)
 
 FILL_SET(Perlin)
+FILL_SET_MAP(Perlin)
 FILL_FRACTAL_SET(Perlin)
+FILL_FRACTAL_SET_MAP(Perlin)
 
 FILL_SET(Simplex)
+FILL_SET_MAP(Simplex)
 FILL_FRACTAL_SET(Simplex)
+FILL_FRACTAL_SET_MAP(Simplex)
 
 //FILL_SET(WhiteNoise)
 
 FILL_SET(Cubic)
+FILL_SET_MAP(Cubic)
 FILL_FRACTAL_SET(Cubic)
+FILL_FRACTAL_SET_MAP(Cubic)
 
 #ifdef FN_ALIGNED_SETS
 #define SIZE_MASK
